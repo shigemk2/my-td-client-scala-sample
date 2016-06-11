@@ -8,7 +8,13 @@ object Hello {
   def main(args: Array[String]): Unit = {
     val client: TDClient = TDClient.newClient()
     val list: java.util.List[TDDatabase] = client.listDatabases()
-    for(database <- list) println(database.getName)
+    for(databases <- list) {
+      println("database: " + databases.getName)
+      for (tables <- client.listTables(databases.getName)) {
+        println("table: " + tables)
+      }
+    }
+
     // Never forget to close the TDClient.
     // Program won't stop if client.close doesn't exist.
     client.close()
